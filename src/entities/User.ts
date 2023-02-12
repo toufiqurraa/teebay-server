@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Product } from './Product'
 
 @Entity()
 export class User extends BaseEntity {
@@ -11,7 +12,7 @@ export class User extends BaseEntity {
   @Column('varchar', { length: 100 })
   last_name!: string
 
-  @Column()
+  @Column('text')
   address!: string
 
   @Column({ unique: true })
@@ -19,6 +20,9 @@ export class User extends BaseEntity {
 
   @Column('text')
   password!: string
+
+  @OneToMany(() => Product, (product) => product.creator)
+  products: Product[]
 
   @CreateDateColumn()
   create_date: Date
