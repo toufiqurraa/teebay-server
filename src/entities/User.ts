@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   password!: string
 
   @OneToMany(() => Product, (product) => product.creator)
-  products: Product[]
+  products!: Product[]
 
   @CreateDateColumn()
   create_date: Date

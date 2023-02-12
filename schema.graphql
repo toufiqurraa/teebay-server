@@ -14,22 +14,12 @@ type Category {
 
 type Mutation {
   createCategory(category_name: String!): Category!
-  createProduct(product_name: String!, product_price: Float!): Product!
   login(email: String!, password: String!): AuthType!
   register(address: String!, confirm_password: String!, email: String!, first_name: String!, last_name: String!, password: String!): AuthType!
 }
 
-type Product {
-  createdBy: User
-  creatorId: Int!
-  product_id: Int!
-  product_name: String!
-  product_price: Float!
-}
-
 type Query {
   categories: [Category!]!
-  products: [Product!]!
 }
 
 type User {
