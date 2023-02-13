@@ -37,6 +37,17 @@ export interface NexusGenObjects {
     category_name: string; // String!
   }
   Mutation: {};
+  Product: { // root type
+    creatorId: number; // Int!
+    product_description: string; // String!
+    product_id: number; // Int!
+    product_name: string; // String!
+    product_price: number; // Float!
+  }
+  ProductCategory: { // root type
+    category_id: number; // Int!
+    product_id: number; // Int!
+  }
   Query: {};
   User: { // root type
     address: string; // String!
@@ -69,11 +80,26 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createCategory: NexusGenRootTypes['Category']; // Category!
+    createProduct: NexusGenRootTypes['Product']; // Product!
     login: NexusGenRootTypes['AuthType']; // AuthType!
     register: NexusGenRootTypes['AuthType']; // AuthType!
   }
+  Product: { // field return type
+    categories: Array<NexusGenRootTypes['ProductCategory'] | null> | null; // [ProductCategory]
+    createdBy: NexusGenRootTypes['User'] | null; // User
+    creatorId: number; // Int!
+    product_description: string; // String!
+    product_id: number; // Int!
+    product_name: string; // String!
+    product_price: number; // Float!
+  }
+  ProductCategory: { // field return type
+    category_id: number; // Int!
+    product_id: number; // Int!
+  }
   Query: { // field return type
     categories: NexusGenRootTypes['Category'][]; // [Category!]!
+    products: NexusGenRootTypes['Product'][]; // [Product!]!
   }
   User: { // field return type
     address: string; // String!
@@ -96,11 +122,26 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createCategory: 'Category'
+    createProduct: 'Product'
     login: 'AuthType'
     register: 'AuthType'
   }
+  Product: { // field return type name
+    categories: 'ProductCategory'
+    createdBy: 'User'
+    creatorId: 'Int'
+    product_description: 'String'
+    product_id: 'Int'
+    product_name: 'String'
+    product_price: 'Float'
+  }
+  ProductCategory: { // field return type name
+    category_id: 'Int'
+    product_id: 'Int'
+  }
   Query: { // field return type name
     categories: 'Category'
+    products: 'Product'
   }
   User: { // field return type name
     address: 'String'
@@ -116,6 +157,12 @@ export interface NexusGenArgTypes {
   Mutation: {
     createCategory: { // args
       category_name: string; // String!
+    }
+    createProduct: { // args
+      categoryIds?: Array<number | null> | null; // [Int]
+      product_description: string; // String!
+      product_name: string; // String!
+      product_price: number; // Float!
     }
     login: { // args
       email: string; // String!
