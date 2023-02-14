@@ -81,6 +81,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createCategory: NexusGenRootTypes['Category']; // Category!
     createProduct: NexusGenRootTypes['Product']; // Product!
+    editProduct: NexusGenRootTypes['Product']; // Product!
     login: NexusGenRootTypes['AuthType']; // AuthType!
     register: NexusGenRootTypes['AuthType']; // AuthType!
   }
@@ -123,6 +124,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createCategory: 'Category'
     createProduct: 'Product'
+    editProduct: 'Product'
     login: 'AuthType'
     register: 'AuthType'
   }
@@ -159,6 +161,12 @@ export interface NexusGenArgTypes {
       category_name: string; // String!
     }
     createProduct: { // args
+      categoryIds?: Array<number | null> | null; // [Int]
+      product_description: string; // String!
+      product_name: string; // String!
+      product_price: number; // Float!
+    }
+    editProduct: { // args
       categoryIds?: Array<number | null> | null; // [Int]
       product_description: string; // String!
       product_name: string; // String!

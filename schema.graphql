@@ -15,6 +15,7 @@ type Category {
 type Mutation {
   createCategory(category_name: String!): Category!
   createProduct(categoryIds: [Int], product_description: String!, product_name: String!, product_price: Float!): Product!
+  editProduct(categoryIds: [Int], product_description: String!, product_name: String!, product_price: Float!): Product!
   login(email: String!, password: String!): AuthType!
   register(address: String!, confirm_password: String!, email: String!, first_name: String!, last_name: String!, password: String!): AuthType!
 }

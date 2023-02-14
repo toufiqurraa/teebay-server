@@ -4,6 +4,14 @@ import { Product } from '../entities/Product'
 import { User } from '../entities/User'
 import { ProductCategory } from '../entities/ProductCategory'
 
+export const ProductCategoryType = objectType({
+  name: 'ProductCategory',
+  definition(t) {
+    t.nonNull.int('product_id')
+    t.nonNull.int('category_id')
+  }
+})
+
 export const ProductType = objectType({
   name: 'Product',
   definition(t) {
@@ -21,18 +29,14 @@ export const ProductType = objectType({
     })
     t.list.field('categories', {
       type: 'ProductCategory',
-      resolve: (product, _args, context): Promise<ProductCategory[] | null> => {
-        return context.createQueryBuilder('product_category').innerJoinAndSelect('product_category.productProductId', 'ProductCategory').where('productCategory.productId = :productId', { productId: product.id }).getMany()
+      resolve: (_parent, _args, _context): Promise<ProductCategory[] | null> => {
+        return ProductCategory.find({
+          relations: {
+            product: true
+          }
+        })
       }
     })
-  }
-})
-
-export const ProductCategoryType = objectType({
-  name: 'ProductCategory',
-  definition(t) {
-    t.nonNull.int('product_id')
-    t.nonNull.int('category_id')
   }
 })
 
@@ -41,7 +45,7 @@ export const ProductsQuery = extendType({
   definition(t) {
     t.nonNull.list.nonNull.field('products', {
       type: 'Product',
-      resolve(_parent, _args, context: Context, _info): Promise<Product[]> {
+      resolve(_parent, _args, context: Context): Promise<Product[]> {
         // return Product.find()
         const { conn } = context
 
@@ -51,6 +55,7 @@ export const ProductsQuery = extendType({
   }
 })
 
+// create product
 export const CreateProductMutation = extendType({
   type: 'Mutation',
   definition(t) {
@@ -62,7 +67,7 @@ export const CreateProductMutation = extendType({
         product_description: nonNull(stringArg()),
         categoryIds: list(intArg())
       },
-      async resolve(_parent, args, context: Context, _info): Promise<Product> {
+      async resolve(_parent, args, context: Context): Promise<Product> {
         const { product_name, product_price, product_description, categoryIds } = args
 
         const { userId } = context
@@ -108,6 +113,22 @@ export const CreateProductMutation = extendType({
         }
 
         return product
+      }
+    })
+  }
+})
+
+// edit product
+export const EditProductMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('editProduct', {
+      type: 'Product',
+      args: {
+        product_name: nonNull(stringArg()),
+        product_price: nonNull(floatArg()),
+        product_description: nonNull(stringArg()),
+        categoryIds: list(intArg())
       }
     })
   }
